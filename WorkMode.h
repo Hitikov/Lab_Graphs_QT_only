@@ -1,0 +1,12 @@
+#ifndef WORKMODE_H
+#define WORKMODE_H
+
+enum WorkMode {
+    DEFAULT,
+    NODEDELITION,
+    EDGEDELITION,
+    EDGEADDING1,
+    EDGEADDING2
+};
+
+#endif // WORKMODE_H
