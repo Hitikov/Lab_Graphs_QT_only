@@ -28,7 +28,11 @@ public slots:
 
     void DeleteEdgeSetup();
 
-    void ShortestPathSetup();
+    void ShortestPathSetup1();
+
+    void ShortestPathSetup2();
+
+    void ShortestPath();
 
     void KomiTask();
 

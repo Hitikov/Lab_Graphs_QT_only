@@ -1,0 +1,85 @@
+<mxfile host="Electron" modified="2024-05-16T04:53:26.187Z" agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) draw.io/24.2.5 Chrome/120.0.6099.109 Electron/28.1.0 Safari/537.36" etag="6t7mfDlQCpd2HGZcMvNQ" version="24.2.5" type="device">
+  <diagram name="Страница — 1" id="s4mWriT41Jr-JxMLOOjL">
+    <mxGraphModel dx="1780" dy="2070" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="FIvrHqPwgJ9G6CmQn5tY-2" value="Tree" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" parent="1" vertex="1">
+          <mxGeometry x="440" y="280" width="250" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="FIvrHqPwgJ9G6CmQn5tY-3" value="- left: Tree&amp;lt;T, TT&amp;gt;*&lt;div&gt;- right: Tree&amp;lt;T, TT&amp;gt;*&lt;/div&gt;&lt;div&gt;- parent:&amp;nbsp;Tree&amp;lt;T, TT&amp;gt;*&lt;/div&gt;&lt;div&gt;- dataContainer: T&lt;/div&gt;&lt;div&gt;- lowerBorder: int&lt;/div&gt;&lt;div&gt;- path: QMap&amp;lt;TT, TT&amp;gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="FIvrHqPwgJ9G6CmQn5tY-2" vertex="1">
+          <mxGeometry y="26" width="250" height="94" as="geometry" />
+        </mxCell>
+        <mxCell id="FIvrHqPwgJ9G6CmQn5tY-4" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" parent="FIvrHqPwgJ9G6CmQn5tY-2" vertex="1">
+          <mxGeometry y="120" width="250" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="FIvrHqPwgJ9G6CmQn5tY-5" value="&lt;div&gt;+ Tree()&lt;/div&gt;&lt;div&gt;+ Tree(T)&lt;/div&gt;&lt;div&gt;+ ~Tree()&lt;/div&gt;&lt;div&gt;+ get_data(): T&lt;/div&gt;&lt;div&gt;+  set_data(T):&amp;nbsp;void&lt;/div&gt;&lt;div&gt;+ get_border(): int&lt;/div&gt;&lt;div&gt;+ set_border(int): void&lt;/div&gt;&lt;div&gt;+ get_path(): QMap&amp;lt;TT, TT&amp;gt;&lt;/div&gt;&lt;div&gt;+ set_path(&lt;span style=&quot;background-color: initial;&quot;&gt;QMap&amp;lt;TT, TT&amp;gt;): void&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;+ insert_left(int, T,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;QMap&amp;lt;TT, TT&amp;gt;): void&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;+&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;insert_right(int, T,&amp;nbsp;&lt;/span&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;QMap&amp;lt;TT, TT&amp;gt;): void&lt;/span&gt;&lt;/div&gt;&lt;div&gt;+ find_min(): QPair&amp;lt;int, Tree&amp;lt;T, TT&amp;gt;*&amp;gt;&lt;/div&gt;&lt;div&gt;&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" parent="FIvrHqPwgJ9G6CmQn5tY-2" vertex="1">
+          <mxGeometry y="128" width="250" height="192" as="geometry" />
+        </mxCell>
+        <mxCell id="r9i-qILRrGlxPu_Ze3Nb-1" value="ElementOfMatrix" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="40" width="140" height="68" as="geometry" />
+        </mxCell>
+        <mxCell id="r9i-qILRrGlxPu_Ze3Nb-2" value="+ value: int&lt;div&gt;+ isNonAvailible: bool&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="r9i-qILRrGlxPu_Ze3Nb-1">
+          <mxGeometry y="26" width="140" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="r9i-qILRrGlxPu_Ze3Nb-3" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="r9i-qILRrGlxPu_Ze3Nb-1">
+          <mxGeometry y="60" width="140" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="r9i-qILRrGlxPu_Ze3Nb-5" value="ZeroElementInfo" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="440" y="130" width="200" height="130" as="geometry" />
+        </mxCell>
+        <mxCell id="r9i-qILRrGlxPu_Ze3Nb-6" value="+ valueZE: int&lt;div&gt;+ rowZE: int&lt;/div&gt;&lt;div&gt;+ columZE: int&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="r9i-qILRrGlxPu_Ze3Nb-5">
+          <mxGeometry y="26" width="200" height="54" as="geometry" />
+        </mxCell>
+        <mxCell id="r9i-qILRrGlxPu_Ze3Nb-7" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="r9i-qILRrGlxPu_Ze3Nb-5">
+          <mxGeometry y="80" width="200" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="r9i-qILRrGlxPu_Ze3Nb-8" value="+ ZeroElementInfo()&lt;div&gt;+ ZeroElementInfo(int, int, int)&lt;br&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="r9i-qILRrGlxPu_Ze3Nb-5">
+          <mxGeometry y="88" width="200" height="42" as="geometry" />
+        </mxCell>
+        <mxCell id="r9i-qILRrGlxPu_Ze3Nb-9" value="Graph" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="30" y="50" width="290" height="320" as="geometry" />
+        </mxCell>
+        <mxCell id="r9i-qILRrGlxPu_Ze3Nb-10" value="- VertexList: QVector&amp;lt;T&amp;gt;&lt;div&gt;- AdjMatrix:&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;QVector&amp;lt;&lt;/span&gt;QVector&amp;lt;T&amp;gt;&lt;span style=&quot;background-color: initial;&quot;&gt;&amp;gt;&lt;/span&gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="r9i-qILRrGlxPu_Ze3Nb-9">
+          <mxGeometry y="26" width="290" height="34" as="geometry" />
+        </mxCell>
+        <mxCell id="r9i-qILRrGlxPu_Ze3Nb-11" value="" style="line;strokeWidth=1;fillColor=none;align=left;verticalAlign=middle;spacingTop=-1;spacingLeft=3;spacingRight=3;rotatable=0;labelPosition=right;points=[];portConstraint=eastwest;strokeColor=inherit;" vertex="1" parent="r9i-qILRrGlxPu_Ze3Nb-9">
+          <mxGeometry y="60" width="290" height="8" as="geometry" />
+        </mxCell>
+        <mxCell id="r9i-qILRrGlxPu_Ze3Nb-12" value="- GetVertexIndex (T): int&lt;div&gt;- GetNeibors (T):&amp;nbsp;&lt;span style=&quot;background-color: initial;&quot;&gt;QVector&amp;lt;T&amp;gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;&lt;span style=&quot;background-color: initial;&quot;&gt;- DepthReadHelper (T, bool*, QQueue&amp;lt;T&amp;gt;&amp;amp;): void&lt;/span&gt;&lt;/div&gt;&lt;div&gt;- WidthReadHelper (T, bool*, QQueue&amp;lt;T&amp;gt;&amp;amp;): void&lt;span style=&quot;background-color: initial;&quot;&gt;&lt;br&gt;&lt;/span&gt;&lt;/div&gt;&lt;div&gt;- CheckAllPathsExist (): bool&lt;/div&gt;&lt;div&gt;+ GetVertexList(): QVector&amp;lt;T&amp;gt;&lt;/div&gt;&lt;div&gt;+ AddVertex (T): void&lt;/div&gt;&lt;div&gt;+ RemoveVertex (T): int&lt;/div&gt;&lt;div&gt;+ SetEdge (T, T, int): bool&lt;/div&gt;&lt;div&gt;+ RemoveEdge (T, T): bool&lt;/div&gt;&lt;div&gt;+ GetWeight (T, T): int&lt;/div&gt;&lt;div&gt;+ DepthRead (T): QQueue&amp;lt;T&amp;gt;&lt;/div&gt;&lt;div&gt;+ WidthRead (T): QQueue&amp;lt;T&amp;gt;&lt;br&gt;&lt;/div&gt;&lt;div&gt;+ Clear (): void&lt;/div&gt;&lt;div&gt;+ FindShortestPath (T, T): QMap&amp;lt;T, T&amp;gt;&lt;/div&gt;&lt;div&gt;+ KommivoyagerTask (): QMap&amp;lt;T, T&amp;gt;&lt;/div&gt;" style="text;strokeColor=none;fillColor=none;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;" vertex="1" parent="r9i-qILRrGlxPu_Ze3Nb-9">
+          <mxGeometry y="68" width="290" height="252" as="geometry" />
+        </mxCell>
+        <mxCell id="r9i-qILRrGlxPu_Ze3Nb-13" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="440" y="480" as="sourcePoint" />
+            <mxPoint x="320" y="320" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="400" y="480" />
+              <mxPoint x="400" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r9i-qILRrGlxPu_Ze3Nb-14" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="440" y="80" as="sourcePoint" />
+            <mxPoint x="320" y="320" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="400" y="80" />
+              <mxPoint x="400" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="r9i-qILRrGlxPu_Ze3Nb-15" value="" style="endArrow=diamondThin;endFill=0;endSize=24;html=1;rounded=0;" edge="1" parent="1">
+          <mxGeometry width="160" relative="1" as="geometry">
+            <mxPoint x="440" y="180" as="sourcePoint" />
+            <mxPoint x="320" y="320" as="targetPoint" />
+            <Array as="points">
+              <mxPoint x="400" y="180" />
+              <mxPoint x="400" y="320" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>

@@ -288,7 +288,75 @@ public:
         AdjMatrix.clear();
     }
 
-    QMap<T, T> FindShortestPath(T vertex1, T vertex2);
+    QVector<T> FindShortestPath(T vertex1, T vertex2)
+    {
+        QVector<QVector<int>> FloAdjMatrix (AdjMatrix.size(), QVector<int>(AdjMatrix.size()));
+        QVector<QVector<int>> Paths (AdjMatrix.size(), QVector<int>(AdjMatrix.size()));
+
+        int startMinValue = INT16_MAX + 1;
+
+        int matrixSize = AdjMatrix.size();
+
+        for (int i = 0; i < matrixSize; i++)
+        {
+            for (int j = 0; j < matrixSize; j++)
+            {
+                if (i == j)
+                {
+                    FloAdjMatrix[i][i] = 0;
+                }
+                else
+                {
+                    if (AdjMatrix[i][j] == 0)
+                    {
+                        FloAdjMatrix[i][j] = startMinValue;
+                    }
+                    else
+                    {
+                        FloAdjMatrix[i][j] = AdjMatrix[i][j];
+                    }
+                }
+            }
+        }
+
+        for (int i = 0; i < matrixSize; i++)
+        {
+            for (int j = 0; j < matrixSize; j++)
+            {
+                if (FloAdjMatrix[i][j] != 0 && FloAdjMatrix[i][j] != startMinValue)
+                {
+                    Paths[i][j] = j;
+                }
+                else
+                {
+                    Paths[i][j] = 0;
+                }
+            }
+        }
+
+        for (int v = 0; v < matrixSize; v++) {
+            for (int a = 0; a < matrixSize; a++) {
+                for (int b = 0; b < matrixSize; b++) {
+                    if (FloAdjMatrix[a][v] != startMinValue && FloAdjMatrix[v][b] != startMinValue && FloAdjMatrix[a][b] > FloAdjMatrix[a][v] + FloAdjMatrix[v][b]) {
+                        FloAdjMatrix[a][b] = FloAdjMatrix[a][v] + FloAdjMatrix[v][b];
+                        Paths[a][b] = v;
+                    }
+                }
+            }
+        }
+
+        T curPos = vertex1;
+        QVector<T> SolvationPath;
+        SolvationPath.push_back(curPos);
+
+        while (curPos != vertex2)
+        {
+            curPos = VertexList[Paths[GetVertexIndex(curPos)][GetVertexIndex(vertex2)]];
+            SolvationPath.push_back(curPos);
+        }
+
+        return SolvationPath;
+    }
 
     QMap<T, T> KommivoyagerTask()
     {

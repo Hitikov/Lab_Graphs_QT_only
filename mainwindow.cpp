@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget *parent)
     connect(ui->userDeleteNode, &QPushButton::clicked, widget, &GraphWidget::DeleteNodeSetup);
     connect(ui->userSetEdge, &QPushButton::clicked, widget, &GraphWidget::SetEdgeSetup1);
     connect(ui->userDeleteEdge, &QPushButton::clicked, widget, &GraphWidget::DeleteEdgeSetup);
-    connect(ui->userShortestPath, &QPushButton::clicked, widget, &GraphWidget::ShortestPathSetup);
+    connect(ui->userShortestPath, &QPushButton::clicked, widget, &GraphWidget::ShortestPathSetup1);
     connect(ui->userKomiTask, &QPushButton::clicked, widget, &GraphWidget::KomiTask);
 
     connect(widget, &GraphWidget::SetNewCommentAct, ui->commentAct, &QLabel::setText);

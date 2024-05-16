@@ -86,6 +86,16 @@ void GraphWidget::timerEvent(QTimerEvent *event)
         SetEdge();
         itemsMoved = true;
     }
+    if (Mode == WorkMode::SHORTESTFIND1 && lastNodeSelected != nullptr)
+    {
+        ShortestPathSetup2();
+        itemsMoved = true;
+    }
+    if (Mode == WorkMode::SHORTESTFIND2 && lastNodeSelected2 != nullptr)
+    {
+        ShortestPath();
+        itemsMoved = true;
+    }
 
     if (!itemsMoved) {
         killTimer(timerId);
@@ -202,13 +212,58 @@ void GraphWidget::DeleteEdge(Edge* argv)
     SetNewCommentAct("Грань удалена");
 }
 
-void GraphWidget::ShortestPathSetup()
+void GraphWidget::ShortestPathSetup1()
 {
+    Mode = WorkMode::SHORTESTFIND1;
+    lastNodeSelected = nullptr;
+    SetNewCommentAct("Выберете вершину отправления");
+}
+
+void GraphWidget::ShortestPathSetup2()
+{
+    Mode = WorkMode::SHORTESTFIND2;
+    lastNodeSelected2 = nullptr;
+    SetNewCommentAct("Выберете вершину прибытия");
+}
+
+
+void GraphWidget::ShortestPath()
+{
+    Mode = WorkMode::DEFAULT;
+
+    SetPathListClear();
+    QString source = lastNodeSelected->value();
+    QString target = lastNodeSelected2->value();
+
+    QVector<QString> path = mathGraph.FindShortestPath(source, target);
+
+    if (path.size()!=0){
+        SetNewCommentPath("Путь решения:");
+        QString start;
+        QString next;
+        QString showValue;
+        int total = 0;
+
+        for (int i = 0; i < path.size() - 1; i++)
+        {
+            start = path[i];
+            next = path[i+1];
+            total += mathGraph.GetWeight(start, next);
+            showValue = start + "->" + next + " (" + QString::number(mathGraph.GetWeight(start, next)) + ")" ;
+            SetNewPathList(showValue);
+        }
+
+        SetNewPathList(QString::number(total));
+    }
+    else
+        SetNewCommentAct("Невозможно решить задачу при текущих условиях");
 
 }
 
 void GraphWidget::KomiTask()
 {
+    Mode = WorkMode::DEFAULT;
+
     SetPathListClear();
 
     QMap <QString, QString> path = mathGraph.KommivoyagerTask();
@@ -238,9 +293,9 @@ void GraphWidget::KomiTask()
 
 void GraphWidget::GetLastNodeClicked(Node* argv)
 {
-    if (!(Mode == WorkMode::EDGEADDING2))
+    if (!(Mode == WorkMode::EDGEADDING2 || Mode == WorkMode::SHORTESTFIND2))
         lastNodeSelected = argv;
-    if (Mode == WorkMode::EDGEADDING2)
+    if (Mode == WorkMode::EDGEADDING2 || Mode == WorkMode::SHORTESTFIND2)
         lastNodeSelected2 = argv;
 }
 
