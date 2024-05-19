@@ -4,16 +4,17 @@
 #include <QPair>
 #include <QMap>
 
+//Класс дерева решения задачи коммивояжера (бинарное дерево)
 template <typename T, typename TT>
 class Tree
 {
 private:
-    Tree<T, TT>* left = nullptr;
-    Tree<T, TT>* right = nullptr;
-    Tree<T, TT>* parent = nullptr;
-    int lowerBorder;
-    QMap<TT, TT> path;
-    T dataContainer;
+    Tree<T, TT>* left = nullptr; //Левая ветвь, ветвь исключения пути
+    Tree<T, TT>* right = nullptr; //Правая ветвь, ветвь включения пути
+    Tree<T, TT>* parent = nullptr; //Предок
+    int lowerBorder; //Текущая нижняя граница
+    QMap<TT, TT> path; //Текущий пройденый путь
+    T dataContainer; //Текущая матрица смежнотси, редуцированная
 
     void delete_left();
     void delete_right();
@@ -37,6 +38,7 @@ public:
 
 };
 
+//Инициализация пустого дерева
 template <typename T, typename TT>
 Tree<T, TT>::Tree() {
     left = right = parent = nullptr;
@@ -51,33 +53,39 @@ Tree<T, TT>::~Tree() {
     delete this;
 }
 
+//Получение значения нижней границы
 template <typename T, typename TT>
 int Tree<T, TT>::get_border() {
     return lowerBorder;
 }
 
+//Установка значения нижней границы
 template <typename T, typename TT>
 void Tree<T, TT>::set_border(int border) {
     lowerBorder = border;
 }
 
+//Получение значения матрицы смежности
 template <typename T, typename TT>
 T Tree<T, TT>::get_data() {
     return dataContainer;
 }
 
+//Установка значения матрицы смежности
 template <typename T, typename TT>
 void Tree<T, TT>::set_data(T data) {
     T tmp(data);
     dataContainer.swap(tmp);
 }
 
+//Получение значения пройденого пути
 template <typename T, typename TT>
 QMap<TT, TT> Tree<T, TT>::get_path()
 {
     return path;
 }
 
+//Установка значения пройденого пути
 template <typename T, typename TT>
 void Tree<T, TT>::set_path(QMap<TT, TT> newpath)
 {
@@ -85,6 +93,7 @@ void Tree<T, TT>::set_path(QMap<TT, TT> newpath)
         path = newpath;
 }
 
+//Удаление левого поддерева (для деструктора)
 template <typename T, typename TT>
 void Tree<T, TT>::delete_left() {
     if (left != nullptr) {
@@ -94,6 +103,7 @@ void Tree<T, TT>::delete_left() {
     }
 }
 
+//Удаление праволевого поддерева (для деструктора)
 template <typename T, typename TT>
 void Tree<T, TT>::delete_right() {
     if (right != nullptr) {
@@ -103,6 +113,7 @@ void Tree<T, TT>::delete_right() {
     }
 }
 
+//Удаление дерева (для деструктора)
 template <typename T, typename TT>
 void Tree<T, TT>::delete_tree() {
     this->delete_left();
@@ -110,6 +121,7 @@ void Tree<T, TT>::delete_tree() {
     delete this;
 }
 
+//Вставка левой ветви с заданными параметрами
 template <typename T, typename TT>
 void Tree<T, TT>::insert_left(int border, T data, QMap<TT, TT> newpath) {
     Tree<T, TT>* new_node = new Tree();
@@ -125,6 +137,7 @@ void Tree<T, TT>::insert_left(int border, T data, QMap<TT, TT> newpath) {
     new_node->parent = this;
 }
 
+//Вставка правой ветви с заданными параметрами
 template <typename T, typename TT>
 void Tree<T, TT>::insert_right(int border, T data, QMap<TT, TT> newpath) {
     Tree<T, TT>* new_node = new Tree();
@@ -140,6 +153,10 @@ void Tree<T, TT>::insert_right(int border, T data, QMap<TT, TT> newpath) {
     new_node->parent = this;
 }
 
+//Нахождение минимальной нижней границы
+//Поиск производится в два этапа:
+//1. Нахождение не ветвившихся вершин
+//2. Сравнение значений их нижних границ и возврат наименьшего значения
 template <typename T, typename TT>
 QPair<int, Tree<T, TT>*> Tree<T, TT>::find_min()
 {

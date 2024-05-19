@@ -7,12 +7,14 @@
 #include <QQueue>
 #include "Tree.h"
 
+//Структура данных для элементов применяемая в задаче коммивояжера
 struct ElementOfMatrix
 {
     int value;
     bool isNonAvailible = false;
 };
 
+//Структура данных для нулевых элементов элементов применяемая в задаче коммивояжера
 struct ZeroElementInfo
 {
     int rowZE;
@@ -29,15 +31,17 @@ struct ZeroElementInfo
     };
 };
 
+//Класс графа, отвечающий за математическую составляющую графа
 template <typename T>
 class Graph
 {
 private:
 
-    QVector<T> VertexList;
+    QVector<T> VertexList; //Вектор названий вершин
 
-    QVector<QVector<int>> AdjMatrix;
+    QVector<QVector<int>> AdjMatrix; //Матрица смежности
 
+    //Получение индекса вершины в векторе по названию
     int GetVertexIndex(T vertex)
     {
         int result = -1;
@@ -53,6 +57,7 @@ private:
         return result;
     }
 
+    //Получение вектора соседних вершин
     QVector<T> GetNeibors(T vertex)
     {
         QVector<T> Neibors;
@@ -75,6 +80,7 @@ private:
         return Neibors;
     }
 
+    //Вспомогательная функция для обхода в глубину
     void DepthReadHelper(T vertex, bool* visitVertex, QQueue<T>& VertexPassedList)
     {
         VertexPassedList.push_back(vertex);
@@ -93,6 +99,7 @@ private:
 
     }
 
+    //Вспомогательная функция для обхода в ширину
     void WidthReadHelper(T vertex, bool* visitVertex, QQueue<T>& queueHelper, QQueue<T>& VertexPassedList)
     {
         int index = GetVertexIndex(vertex);
@@ -126,6 +133,7 @@ private:
         }
     }
 
+    //Проверка существования всех путей для задачи коммивояжера
     bool CheckAllPathsExist()
     {
         bool AllPathsExist = true;
@@ -148,8 +156,10 @@ private:
 
 public:
 
+    //Получение вектора вершин
     QVector<T> GetVertexList() {return VertexList;}
 
+    //Добавление новой вершины
     void AddVertex(T vertex)
     {
         VertexList.push_back(vertex);
@@ -169,6 +179,7 @@ public:
         }
     }
 
+    //Удаление вершины из вектора
     int RemoveVertex(T vertex)
     {
         int rIndex = GetVertexIndex(vertex);
@@ -201,6 +212,7 @@ public:
         return removedCount;
     }
 
+    //Установление значения грани
     bool SetEdge(T vertex1, T vertex2, int weight)
     {
         int sourceIndex = GetVertexIndex(vertex1);
@@ -216,6 +228,7 @@ public:
         return true;
     }
 
+    //Сброс значения грани / удаление грани
     bool RemoveEdge(T vertex1, T vertex2)
     {
         int sourceIndex = GetVertexIndex(vertex1);
@@ -231,6 +244,7 @@ public:
         return true;
     }
 
+    //Получение значения грани
     int GetWeight (T vertex1, T vertex2)
     {
         int sourceIndex = GetVertexIndex(vertex1);
@@ -249,6 +263,7 @@ public:
         return AdjMatrix[sourceIndex][targetIndex];
     }
 
+    //Функция чтения графа в глубину
     QQueue<T> DepthRead(T startvertex)
     {
         QQueue<T> VertexPassed;
@@ -265,6 +280,7 @@ public:
         delete[] visitedVertexes;
     }
 
+    //Функция чтения графа в ширину
     QQueue<T> WidthRead(T startvertex)
     { 
         QQueue<T> VertexPassed;
@@ -282,21 +298,24 @@ public:
 
     }
 
+    //Отчистка вектора названий и матрицы смежности
     void Clear()
     {
         VertexList.clear();
         AdjMatrix.clear();
     }
 
+    //Нахождение кратчайшего пути от одной вершины до другой с применением метода Флойда
     QVector<T> FindShortestPath(T vertex1, T vertex2)
     {
+        //Объявление матриц длин и путей
         QVector<QVector<int>> FloAdjMatrix (AdjMatrix.size(), QVector<int>(AdjMatrix.size()));
-        QVector<QVector<int>> Paths (AdjMatrix.size(), QVector<int>(AdjMatrix.size()));
+        QVector<QVector<QVector<int>>> Paths (AdjMatrix.size(), QVector<QVector<int>>(AdjMatrix.size(), QVector<int>(0)));
 
         int startMinValue = INT16_MAX + 1;
-
         int matrixSize = AdjMatrix.size();
 
+        //Составление матрицы длин
         for (int i = 0; i < matrixSize; i++)
         {
             for (int j = 0; j < matrixSize; j++)
@@ -318,57 +337,64 @@ public:
                 }
             }
         }
-
+        //Составление матрицы путей
         for (int i = 0; i < matrixSize; i++)
         {
             for (int j = 0; j < matrixSize; j++)
             {
                 if (FloAdjMatrix[i][j] != 0 && FloAdjMatrix[i][j] != startMinValue)
                 {
-                    Paths[i][j] = j;
+                    Paths[i][j].append(j);
                 }
                 else
                 {
-                    Paths[i][j] = 0;
+
                 }
             }
         }
 
-        for (int v = 0; v < matrixSize; v++) {
-            for (int a = 0; a < matrixSize; a++) {
-                for (int b = 0; b < matrixSize; b++) {
-                    if (FloAdjMatrix[a][v] != startMinValue && FloAdjMatrix[v][b] != startMinValue && FloAdjMatrix[a][b] > FloAdjMatrix[a][v] + FloAdjMatrix[v][b]) {
-                        FloAdjMatrix[a][b] = FloAdjMatrix[a][v] + FloAdjMatrix[v][b];
-                        Paths[a][b] = v;
+        //Сравнение путей и определение кратчайших в соответствии и методом Флойда
+        for (int i = 0; i < matrixSize; i++){
+            for (int v = 0; v < matrixSize; v++) {
+                for (int a = 0; a < matrixSize; a++) {
+                    for (int b = 0; b < matrixSize; b++) {
+                        if (FloAdjMatrix[a][b] > FloAdjMatrix[a][v] + FloAdjMatrix[v][b]) {
+                            FloAdjMatrix[a][b] = FloAdjMatrix[a][v] + FloAdjMatrix[v][b];
+                            Paths[a][b].append(v);
+                        }
                     }
                 }
             }
         }
 
+        //Получение кратчайшего пути между выбранными вершинами
         T curPos = vertex1;
         QVector<T> SolvationPath;
         SolvationPath.push_back(curPos);
 
-        while (curPos != vertex2)
+        for (int i = 0; i < Paths[GetVertexIndex(vertex1)][GetVertexIndex(vertex2)].size(); i++)
         {
-            curPos = VertexList[Paths[GetVertexIndex(curPos)][GetVertexIndex(vertex2)]];
+            curPos = VertexList[Paths[GetVertexIndex(vertex1)][GetVertexIndex(vertex2)][i]];
             SolvationPath.push_back(curPos);
         }
 
         return SolvationPath;
     }
 
+    //Решение задачи коммивояжера с применением метода вершин и границ
     QMap<T, T> KommivoyagerTask()
     {
-
+        //Проверка существования всех путей, обязательное условие задачи
         if (!CheckAllPathsExist())
         {
             return QMap<T, T>();
         }
 
+        //Объявление матрицы смежности подготовленной для применения метода
         QVector<QVector<ElementOfMatrix>> KomAdjMatrix1
                 (AdjMatrix.size(), QVector<ElementOfMatrix>(AdjMatrix.size()));
 
+        //Составление матрицы смежности
         for (int i = 0; i < AdjMatrix.size(); i++)
         {
             for (int j = 0; j < AdjMatrix.size(); j++)
@@ -386,12 +412,10 @@ public:
         }
 
         int lowerBorder = 0;
-
         int matrixSize = KomAdjMatrix1.size();
-
         int startMinValue = INT16_MAX + 1;
 
-        //Finding mins in rows + reduction
+        //Получение минимальных значений строк и редукция строк
         QVector<int> minValues1 (matrixSize);
         QVector<int> minValues2 (matrixSize);
 
@@ -403,7 +427,6 @@ public:
         {
             minValues2[i] = startMinValue;
         }
-
 
         for (int i = 0; i < matrixSize; i++)
         {
@@ -430,8 +453,7 @@ public:
             }
         }
 
-        //Finding mins in colums + reduction
-
+        //Получение минимальных значений столбцов и редукция столбцов
         for (int i = 0; i < matrixSize; i++)
         {
             for (int j = 0; j < matrixSize; j++)
@@ -457,7 +479,7 @@ public:
             }
         }
 
-        //Calculating new lower border
+        //Вычисление корневой границы
         for(int i = 0; i < minValues1.size(); i++)
         {
             lowerBorder += minValues1[i];
@@ -468,6 +490,7 @@ public:
             lowerBorder += minValues2[i];
         }
 
+        //Создание дерева решения и установка значений корневой вершины
         Tree<QVector<QVector<ElementOfMatrix>>, T>* WorkTreeBase = new Tree<QVector<QVector<ElementOfMatrix>>, T>;
 
         QMap<T, T> SolvationPath;
@@ -476,10 +499,15 @@ public:
         WorkTreeBase->set_border(lowerBorder);
         WorkTreeBase->set_path(SolvationPath);
 
-        while (WorkTreeBase->find_min().second->get_path().size() != KomAdjMatrix1.size())
+        //Цикл поиска кратчайшего пути
+        //Условие завершения - получение полного пути в вершине с минимальной нижней границей
+        while (WorkTreeBase->find_min().second->get_path().size() != matrixSize)
         {
+            //Выбор рабочей вершины
+            //Рабочая вершина - вершина с наименьшей нижней границей
             Tree<QVector<QVector<ElementOfMatrix>>, T>* WorkTree = WorkTreeBase->find_min().second;
 
+            //Получение данных хранимых в вершине
             QVector<QVector<ElementOfMatrix>> KomAdjMatrix = WorkTree->get_data();
 
             SolvationPath = WorkTree->get_path();
@@ -488,7 +516,9 @@ public:
 
             int matrixSize = AdjMatrix.size();
 
-            //Finding ZeroElement with highest rating 7 8
+            //Нахождение нулевого элемента с наибольшей оценкой
+            //Производится для выбора дальнейшего пути
+            //Позиция нулевого элемента отражает пункт отправления и пункт прибытия
             ZeroElementInfo ZeroElementToDelete;
 
             ZeroElementToDelete.valueZE = 0;
@@ -497,8 +527,10 @@ public:
             {
                 for (int j = 0; j < matrixSize; j++)
                 {
+                    //Поиск элемента в матрице смежности со значением 0
                     if (!KomAdjMatrix[i][j].isNonAvailible && KomAdjMatrix[i][j].value == 0)
                     {
+                        //Нахождение минимальных значений в соответствующих столбце и строке
                         int minRow = startMinValue;
                         int minColum = startMinValue;
 
@@ -520,6 +552,7 @@ public:
                             }
                         }
 
+                        /*
                         if (minRow == startMinValue)
                         {
                             minRow = 0;
@@ -528,7 +561,9 @@ public:
                         {
                             minColum = 0;
                         }
+                        */
 
+                        //Сравнение полученных значений с предыдущим нулевым элементом с наибольшей оценкой
                         if (ZeroElementToDelete.valueZE <= minRow + minColum)
                         {
                             ZeroElementToDelete.valueZE = minRow + minColum;
@@ -539,7 +574,8 @@ public:
                 }
             }
 
-            int lowerBorderNotSelected = lowerBorder /*+ ZeroElementToDelete.valueZE*/;
+            //Составление нижней границы и матрицы смежности для ветви, не включающей выбранный путь
+            int lowerBorderNotSelected = lowerBorder + ZeroElementToDelete.valueZE;
 
             QVector<QVector<ElementOfMatrix>> KomAdjMatrixOther = KomAdjMatrix;
 
@@ -554,8 +590,8 @@ public:
                 minValues2[i] = startMinValue;
             }
 
-            //Reduction to matrix with path not included
-            //Finding mins in rows + reduction
+            //Редукция матрицы, не включающей выбранный путь
+            //Получение минимальных значений строк и редукция строк
             for (int i = 0; i < matrixSize; i++)
             {
                 for (int j = 0; j < matrixSize; j++)
@@ -580,7 +616,7 @@ public:
                 }
             }
 
-            //Finding mins in colums + reduction
+            //Получение минимальных значений столбцов и редукция столбцов
             for (int i = 0; i < matrixSize; i++)
             {
                 for (int j = 0; j < matrixSize; j++)
@@ -605,17 +641,22 @@ public:
                 }
             }
 
-            //Calculating new lower border
+            //Вычисление нижней границы матрицы, не включающей выбранный путь
+            /*
             for(int i = 0; i < minValues1.size(); i++)
             {
-                lowerBorderNotSelected += minValues1[i];
+                if (minValues1[i] != startMinValue)
+                    lowerBorderNotSelected += minValues1[i];
             }
 
             for(int i = 0; i < minValues2.size(); i++)
             {
-                lowerBorderNotSelected += minValues2[i];
+                if (minValues2[i] != startMinValue)
+                    lowerBorderNotSelected += minValues2[i];
             }
+            */
 
+            //Создание ветви решения, где был исключен выбранный путь
             WorkTree->insert_left(lowerBorderNotSelected, KomAdjMatrixOther, SolvationPath);
 
             for (int i = 0; i < matrixSize; i++)
@@ -638,8 +679,8 @@ public:
                 minValues2[i] = startMinValue;
             }
 
-            //Reduction to matrix with path included
-            //Finding mins in rows + reduction
+            //Редукция матрицы, включающей выбранный путь
+            //Получение минимальных значений строк и редукция строк
             for (int i = 0; i < matrixSize; i++)
             {
                 for (int j = 0; j < matrixSize; j++)
@@ -664,7 +705,7 @@ public:
                 }
             }
 
-            //Finding mins in colums + reduction
+            //Получение минимальных значений столбцов и редукция столбцов
             for (int i = 0; i < matrixSize; i++)
             {
                 for (int j = 0; j < matrixSize; j++)
@@ -689,7 +730,7 @@ public:
                 }
             }
 
-            //Calculating new lower border
+            //Вычисление нижней границы матрицы, включающей выбранный путь
             for(int i = 0; i < minValues1.size(); i++)
             {
                 if (minValues1[i] != startMinValue)
@@ -701,17 +742,15 @@ public:
                     lowerBorder += minValues2[i];
             }
 
+            //Создание ветви решения, где был включен выбранный путь
             WorkTree->insert_right(lowerBorder, KomAdjMatrix, SolvationPath);
         }
 
+        //Получение кратчайайшего пути и возврат полученного значения
         SolvationPath = WorkTreeBase->find_min().second->get_path();
 
         return SolvationPath;
     }
 };
-
-
-
-
 
 #endif // GRAPH_H

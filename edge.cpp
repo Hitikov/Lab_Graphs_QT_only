@@ -5,6 +5,8 @@
 #include <qmath.h>
 #include <QPainter>
 
+//Инициализация графической грани графа
+//Параметры - связываемые вершины и значение веса грани
 Edge::Edge(Node *sourceNode, Node *targetNode, int newValue) : arrowSize(10)
 {
     setAcceptedMouseButtons(Qt::MouseButtons(1));
@@ -16,16 +18,19 @@ Edge::Edge(Node *sourceNode, Node *targetNode, int newValue) : arrowSize(10)
     adjust();
 }
 
+//Получение указателя на вершину отправления
 Node *Edge::sourceNode() const
 {
     return source;
 }
 
+//Получение указателя на вершину прибытия
 Node *Edge::targetNode() const
 {
     return target;
 }
 
+//Соединение двух вершин гранью
 void Edge::adjust()
 {
     if (!source || !target)
@@ -45,35 +50,27 @@ void Edge::adjust()
     }
 }
 
+//Формирование ограничивающего прямоугольника
 QRectF Edge::boundingRect() const
 {
     if (!source || !target)
         return QRectF();
 
     qreal penWidth = 1;
-    qreal extra = (penWidth + arrowSize) / 2.0 + 30;
+    qreal extra = (penWidth + arrowSize) / 2.0 + 15;
 
     QPointF tmp = sourcePoint;
 
     tmp.setX(tmp.x() - 20);
     tmp.setY(tmp.y() - 20);
 
-    /*
-    int shiftX;
-    int shiftY;
-
-    if (targetPoint.x() > sourcePoint.x()) shiftX = 30;
-    else shiftX = -30;
-
-    if (targetPoint.y() > sourcePoint.y()) shiftY = 30;
-    else shiftY = -30;
-*/
     return QRectF(sourcePoint, QSizeF(targetPoint.x() - sourcePoint.x() ,
                                       targetPoint.y() - sourcePoint.y() ))
         .normalized()
         .adjusted(-extra, -extra, extra, extra);
 }
 
+//Отрисовка грани
 void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 {
     if (!source || !target)
@@ -83,7 +80,7 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     if (qFuzzyCompare(line.length(), qreal(0.)))
         return;
 
-    QPointF textPos = ((targetPoint + sourcePoint) / 2 + targetPoint)/2 + QPointF(0, 20);
+    QPointF textPos = ((targetPoint + sourcePoint) / 2 + targetPoint)/2 + QPointF(0, 10);
 
     // Draw the line itself
     painter->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
@@ -106,6 +103,7 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     painter->drawPolygon(QPolygonF() << line.p2() << targetArrowP1 << targetArrowP2);
 }
 
+//Регистрация нажатия на грань
 void Edge::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
     SetWasClicked(true);
@@ -114,10 +112,12 @@ void Edge::mousePressEvent(QGraphicsSceneMouseEvent *event)
     QGraphicsItem::mousePressEvent(event);
 }
 
+//Проверка нажатия на грань
 bool Edge::IWasClicked()
 {
     return isClicked;
 }
+//Установка значения переменной регистрации нажатия
 void Edge::SetWasClicked(bool bl)
 {
     isClicked = bl;
