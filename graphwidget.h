@@ -14,40 +14,26 @@ class GraphWidget : public QGraphicsView
 
 public:
     GraphWidget(QWidget* parent = nullptr);
-
     void itemMoved();
 public slots:
 
     void AddNode();
-
     void DeleteNodeSetup();
-
     void SetEdgeSetup1();
-
     void SetEdgeSetup2();
-
     void DeleteEdgeSetup();
-
     void ShortestPathSetup1();
-
     void ShortestPathSetup2();
-
     void ShortestPath();
-
     void KomiTask();
-
     void GetLastNodeClicked(Node* argv);
-
     void GetLastEdgeClicked(Edge* argv);
 
 signals:
 
     void SetNewCommentAct(QString comment);
-
     void SetNewCommentPath(QString comment);
-
     void SetNewPathList(QString path);
-
     void SetPathListClear();
 
 protected:
