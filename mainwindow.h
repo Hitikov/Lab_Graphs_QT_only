@@ -21,8 +21,9 @@ private slots:
 public slots:
 
     void AddNewPathList(QString argv1);
-
     void PathListClear();
+    void BlockUI();
+    void UnBlockUI();
 
 private:
     Ui::MainWindow *ui;

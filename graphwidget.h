@@ -35,6 +35,8 @@ signals:
     void SetNewCommentPath(QString comment);
     void SetNewPathList(QString path);
     void SetPathListClear();
+    void BlockUI();
+    void UnBlockUI();
 
 protected:
     void timerEvent(QTimerEvent *event) override;
@@ -57,6 +59,8 @@ private:
     Edge* lastEdgeSelected;
 
     int Mode;
+
+    QWidget *parentRecord;
 };
 
 #endif // GRAPHWIDGET_H

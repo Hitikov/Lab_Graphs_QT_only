@@ -45,6 +45,7 @@ void Edge::adjust()
         QPointF edgeOffset((line.dx() * 20) / length, (line.dy() * 20) / length);
         sourcePoint = line.p1() + edgeOffset;
         targetPoint = line.p2() - edgeOffset;
+        textPos = ((targetPoint + sourcePoint) / 2 + targetPoint)/2 - QPointF(5, 10);
     } else {
         sourcePoint = targetPoint = line.p1();
     }
@@ -80,27 +81,29 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
     if (qFuzzyCompare(line.length(), qreal(0.)))
         return;
 
-    QPointF textPos = ((targetPoint + sourcePoint) / 2 + targetPoint)/2 + QPointF(0, 10);
-
     // Draw the line itself
-    painter->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
-    painter->drawLine(line);
+    if (!notSuit)
+    {
+        painter->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+        painter->drawLine(line);
 
-    QFont t = painter->font();
-    t.setPointSize(12);
-    painter->setFont(t);
-    painter->drawText(textPos, QString::number(showValue));
+        QFont t = painter->font();
+        t.setPointSize(12);
+        painter->setFont(t);
 
-    // Draw the arrows
-    double angle = std::atan2(-line.dy(), line.dx());
+        painter->drawText(textPos, QString::number(showValue));
 
-    QPointF targetArrowP1 = targetPoint + QPointF(sin(angle - M_PI / 3) * arrowSize,
-                                              cos(angle - M_PI / 3) * arrowSize);
-    QPointF targetArrowP2 = targetPoint + QPointF(sin(angle - M_PI + M_PI / 3) * arrowSize,
-                                             cos(angle - M_PI + M_PI / 3) * arrowSize);
+        // Draw the arrows
+        double angle = std::atan2(-line.dy(), line.dx());
 
-    painter->setBrush(Qt::black);
-    painter->drawPolygon(QPolygonF() << line.p2() << targetArrowP1 << targetArrowP2);
+        QPointF targetArrowP1 = targetPoint + QPointF(sin(angle - M_PI / 3) * arrowSize,
+                                                  cos(angle - M_PI / 3) * arrowSize);
+        QPointF targetArrowP2 = targetPoint + QPointF(sin(angle - M_PI + M_PI / 3) * arrowSize,
+                                                 cos(angle - M_PI + M_PI / 3) * arrowSize);
+
+        painter->setBrush(Qt::black);
+        painter->drawPolygon(QPolygonF() << line.p2() << targetArrowP1 << targetArrowP2);
+    }
 }
 
 //Регистрация нажатия на грань
@@ -121,5 +124,10 @@ bool Edge::IWasClicked()
 void Edge::SetWasClicked(bool bl)
 {
     isClicked = bl;
+}
+
+void Edge::SetNotSuit(bool bl)
+{
+    notSuit = bl;
 }
 

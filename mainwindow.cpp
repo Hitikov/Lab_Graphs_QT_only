@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
     QWidget::setWindowTitle("Graph graphics");
+
     GraphWidget *widget = new GraphWidget(ui->graphicsView);
 
     //Связывание сигналов кнопок с соответствующими слотами графического виджета
@@ -34,6 +35,10 @@ MainWindow::MainWindow(QWidget *parent)
             this, &MainWindow::AddNewPathList);
     connect(widget, &GraphWidget::SetPathListClear,
             this, &MainWindow::PathListClear);
+    connect(widget, &GraphWidget::BlockUI,
+            this, &MainWindow::BlockUI);
+    connect(widget, &GraphWidget::UnBlockUI,
+            this, &MainWindow::UnBlockUI);
 }
 
 MainWindow::~MainWindow()
@@ -51,4 +56,24 @@ void MainWindow::AddNewPathList(QString argv1)
 void MainWindow::PathListClear()
 {
     ui->listPath->clear();
+}
+
+//Блокировка возможности изменения интерфейса
+void MainWindow::BlockUI()
+{
+    ui->userAddNode->setEnabled(false);
+    ui->userDeleteNode->setEnabled(false);
+    ui->userSetEdge->setEnabled(false);
+    ui->userDeleteEdge->setEnabled(false);
+    ui->userKomiTask->setText("Закончить\nпросмотр");
+}
+
+//Разблокировка возможности изменения интерфейса
+void MainWindow::UnBlockUI()
+{
+    ui->userAddNode->setEnabled(true);
+    ui->userDeleteNode->setEnabled(true);
+    ui->userSetEdge->setEnabled(true);
+    ui->userDeleteEdge->setEnabled(true);
+    ui->userKomiTask->setText("Решение задачи\nкоммивояжера");
 }

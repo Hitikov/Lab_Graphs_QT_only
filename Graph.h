@@ -382,12 +382,12 @@ public:
     }
 
     //Решение задачи коммивояжера с применением метода вершин и границ
-    QMap<T, T> KommivoyagerTask()
+    QPair<QMap<T, T>, Tree<QVector<QVector<ElementOfMatrix>>, T>*> KommivoyagerTask()
     {
         //Проверка существования всех путей, обязательное условие задачи
         if (!CheckAllPathsExist())
         {
-            return QMap<T, T>();
+            return QPair<QMap<T, T>, Tree<QVector<QVector<ElementOfMatrix>>, T>*>();
         }
 
         //Объявление матрицы смежности подготовленной для применения метода
@@ -498,6 +498,7 @@ public:
         WorkTreeBase->set_data(KomAdjMatrix1);
         WorkTreeBase->set_border(lowerBorder);
         WorkTreeBase->set_path(SolvationPath);
+        WorkTreeBase->set_lastPath("Root");
 
         //Цикл поиска кратчайшего пути
         //Условие завершения - получение полного пути в вершине с минимальной нижней границей
@@ -537,7 +538,7 @@ public:
                         for (int k = 0; k < matrixSize; k++)
                         {
                             if (!KomAdjMatrix[i][k].isNonAvailible &&
-                                    minRow > KomAdjMatrix[i][k].value)
+                                    minRow > KomAdjMatrix[i][k].value && k != j)
                             {
                                 minRow = KomAdjMatrix[i][k].value;
                             }
@@ -546,7 +547,7 @@ public:
                         for (int k = 0; k < matrixSize; k++)
                         {
                             if (!KomAdjMatrix[k][j].isNonAvailible &&
-                                    minColum > KomAdjMatrix[k][j].value)
+                                    minColum > KomAdjMatrix[k][j].value && k != i)
                             {
                                 minColum = KomAdjMatrix[k][j].value;
                             }
@@ -657,7 +658,8 @@ public:
             */
 
             //Создание ветви решения, где был исключен выбранный путь
-            WorkTree->insert_left(lowerBorderNotSelected, KomAdjMatrixOther, SolvationPath);
+            QString lastPath = "!" + VertexList[ZeroElementToDelete.rowZE] + " - " + VertexList[ZeroElementToDelete.columZE];
+            WorkTree->insert_left(lowerBorderNotSelected, KomAdjMatrixOther, SolvationPath, lastPath);
 
             for (int i = 0; i < matrixSize; i++)
             {
@@ -743,13 +745,16 @@ public:
             }
 
             //Создание ветви решения, где был включен выбранный путь
-            WorkTree->insert_right(lowerBorder, KomAdjMatrix, SolvationPath);
+            lastPath = VertexList[ZeroElementToDelete.rowZE] + " - " + VertexList[ZeroElementToDelete.columZE];
+            WorkTree->insert_right(lowerBorder, KomAdjMatrix, SolvationPath, lastPath);
         }
 
         //Получение кратчайайшего пути и возврат полученного значения
         SolvationPath = WorkTreeBase->find_min().second->get_path();
 
-        return SolvationPath;
+        QPair<QMap<T, T>, Tree<QVector<QVector<ElementOfMatrix>>, T>*> pairToReturn (SolvationPath, WorkTreeBase);
+
+        return pairToReturn;
     }
 };
 

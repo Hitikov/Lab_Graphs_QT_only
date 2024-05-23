@@ -2,6 +2,7 @@
 #include "edge.h"
 #include "node.h"
 #include "WorkMode.h"
+#include "treevisual.h"
 
 #include <math.h>
 
@@ -21,7 +22,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     setCacheMode(CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
     setRenderHint(QPainter::Antialiasing);
-    setMinimumSize(657, 543);
+    setMinimumSize(594, 471);
 
     Mode = WorkMode::DEFAULT;
 }
@@ -307,16 +308,35 @@ void GraphWidget::ShortestPath()
 
 void GraphWidget::KomiTask()
 {
-    //Переключение в стандартный режим работы
-    Mode = WorkMode::DEFAULT;
+    if (Mode == WorkMode::KOMMIBLOCK){
+        emit SetPathListClear();
+        emit UnBlockUI();
+        Mode = WorkMode::DEFAULT;
 
-    emit SetPathListClear();
+        QList<Edge *> edges;
+        foreach (QGraphicsItem *item, scene()->items()) {
+            if (Edge *edge = qgraphicsitem_cast<Edge *>(item))
+                edge->SetNotSuit(false);
+        }
+
+        scene()->update(-400, -250, 800, 500);
+
+        return;
+    }
 
     //Получение решения задачи коммивояжера
-    QMap <QString, QString> path = mathGraph.KommivoyagerTask();
+    QMap <QString, QString> path = mathGraph.KommivoyagerTask().first;
+
+    Tree<QVector<QVector<ElementOfMatrix>>, QString>* solvationTree = mathGraph.KommivoyagerTask().second;
 
     //Вывод пути, если он был найден, в поле путей
     if (path.size()!=0){
+
+        //Переключение в режим работы блокировки действий
+        Mode = WorkMode::KOMMIBLOCK;
+        emit BlockUI();
+        emit SetPathListClear();
+
         emit SetNewCommentPath("Путь решения:");
         QString start = mathGraph.GetVertexList().first();
         QString next;
@@ -333,6 +353,21 @@ void GraphWidget::KomiTask()
         } while (start != mathGraph.GetVertexList().first());
 
         emit SetNewPathList(QString::number(total));
+
+        QList<Edge *> edges;
+        foreach (QGraphicsItem *item, scene()->items()) {
+            if (Edge *edge = qgraphicsitem_cast<Edge *>(item)){
+                if (edge->targetNode()->value() != path[edge->sourceNode()->value()])
+                {
+                    edge->SetNotSuit(true);
+                }
+            }
+        }
+        scene()->update(-400, -250, 800, 500);
+
+        TreeVisual *widget = new TreeVisual(0, solvationTree, &mathGraph);
+        widget->show();
+
     }
     else
         emit SetNewCommentAct("Невозможно решить задачу при текущих условиях");

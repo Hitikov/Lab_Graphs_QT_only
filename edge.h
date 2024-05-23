@@ -15,9 +15,13 @@ private:
     QPointF targetPoint;
     qreal arrowSize;
 
+    QPointF textPos;
+
     int showValue;
 
     bool isClicked;
+
+    bool notSuit;
 
 protected:
     QRectF boundingRect() const override;
@@ -37,6 +41,8 @@ public:
 
     bool IWasClicked();
     void SetWasClicked(bool);
+
+    void SetNotSuit(bool);
 };
 
 #endif // EDGE_H

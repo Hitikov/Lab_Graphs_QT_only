@@ -13,7 +13,8 @@ SOURCES += \
     graphwidget.cpp \
     main.cpp \
     mainwindow.cpp \
-    node.cpp
+    node.cpp \
+    treevisual.cpp
 
 HEADERS += \
     Graph.h \
@@ -22,7 +23,8 @@ HEADERS += \
     edge.h \
     graphwidget.h \
     mainwindow.h \
-    node.h
+    node.h \
+    treevisual.h
 
 FORMS += \
     mainwindow.ui

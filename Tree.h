@@ -15,6 +15,7 @@ private:
     int lowerBorder; //Текущая нижняя граница
     QMap<TT, TT> path; //Текущий пройденый путь
     T dataContainer; //Текущая матрица смежнотси, редуцированная
+    QString lastPath;
 
     void delete_left();
     void delete_right();
@@ -23,20 +24,35 @@ public:
     Tree();
     ~Tree();
 
+    Tree<T, TT>* get_left() {return left;}
+    Tree<T, TT>* get_right() {return right;}
+    Tree<T, TT>* get_parent() {return parent;}
+
     int get_border();
     void set_border(int);
     T get_data();
     void set_data(T);
     QMap<TT, TT> get_path();
     void set_path(QMap<TT, TT>);
+    QString get_lastPath();
+    void set_lastPath(QString);
 
-    void insert_left(int, T, QMap<TT, TT>);
-    void insert_right(int, T, QMap<TT, TT>);
+    void insert_left(int, T, QMap<TT, TT>, QString);
+    void insert_right(int, T, QMap<TT, TT>, QString);
     void delete_tree();
+
+    bool haveParent();
 
     QPair<int, Tree<T, TT>*> find_min();
 
 };
+
+template <typename T, typename TT>
+bool Tree<T, TT>::haveParent()
+{
+    if (parent!=nullptr) return true;
+    else return false;
+}
 
 //Инициализация пустого дерева
 template <typename T, typename TT>
@@ -93,6 +109,18 @@ void Tree<T, TT>::set_path(QMap<TT, TT> newpath)
         path = newpath;
 }
 
+template <typename T, typename TT>
+QString Tree<T, TT>::get_lastPath()
+{
+    return lastPath;
+}
+
+template <typename T, typename TT>
+void Tree<T, TT>::set_lastPath(QString newpath)
+{
+    lastPath = newpath;
+}
+
 //Удаление левого поддерева (для деструктора)
 template <typename T, typename TT>
 void Tree<T, TT>::delete_left() {
@@ -123,11 +151,12 @@ void Tree<T, TT>::delete_tree() {
 
 //Вставка левой ветви с заданными параметрами
 template <typename T, typename TT>
-void Tree<T, TT>::insert_left(int border, T data, QMap<TT, TT> newpath) {
+void Tree<T, TT>::insert_left(int border, T data, QMap<TT, TT> newpath, QString lastPath) {
     Tree<T, TT>* new_node = new Tree();
     new_node->set_data(data);
     new_node->set_border(border);
     new_node->set_path(newpath);
+    new_node->set_lastPath(lastPath);
 
     if (this->left != nullptr) {
         this->left->parent = new_node;
@@ -139,11 +168,12 @@ void Tree<T, TT>::insert_left(int border, T data, QMap<TT, TT> newpath) {
 
 //Вставка правой ветви с заданными параметрами
 template <typename T, typename TT>
-void Tree<T, TT>::insert_right(int border, T data, QMap<TT, TT> newpath) {
+void Tree<T, TT>::insert_right(int border, T data, QMap<TT, TT> newpath, QString lastPath) {
     Tree<T, TT>* new_node = new Tree();
     new_node->set_data(data);
     new_node->set_border(border);
     new_node->set_path(newpath);
+    new_node->set_lastPath(lastPath);
 
     if (this->right != nullptr) {
         this->right->parent = new_node;
